@@ -1,8 +1,6 @@
 # Linux Server Configuration Project - R Duran - Udacity FSND
 
-### IP: 54.70.76.145
-### URL: http://ec2-54-70-76-145.us-west-2.compute.amazonaws.com
-### SSH Port: 2200
+Note: The server that was created for this project is now offline.  I have changed references to the IP in this document to X.X.X.X as the static IP is no longer attached to the server instance.  If you are using this readme to set up your own instance, simply substitute in your IP address.
 
 ## OS Setup
 
@@ -31,9 +29,9 @@ Clean up packages not needed
 
 Rebooted the server using the Lightsail console
 
-Downloaded the .pem file and used it to log into the server using a local terminal
+Downloaded the .pem file and used it to log into the server using a local terminal (Replace 'pem_filename.pem' with the filename of your actual private key file.
 
-    ssh ubuntu@54.70.76.145 -i 'pem_filename.pem' 
+    ssh ubuntu@X.X.X.X -i 'pem_filename.pem' 
 
 
 Created an account for the Udacity grader
@@ -54,7 +52,7 @@ On the local terminal, created a public/private key pair for 'grader' and saved 
 
 Tested that grader could access the system using the key (replace grader_priv_key with the actual key filename)
 
-    ssh grader@54.70.76.145 -i 'grader_priv_key'
+    ssh grader@X.X.X.X -i 'grader_priv_key'
 
 Logged out of 'grader' account and logged back in as ubuntu user
 
@@ -72,7 +70,7 @@ Configured UFW
     (was inactive)
     sudo ufw default deny incoming
     sudo ufw default allow outgoing
-    sudo ufw allow ssh
+    sudo ufw deny 22
     sudo ufw allow 2200/tcp
     sudo ufw allow ntp
     sudo ufw allow www
@@ -88,7 +86,7 @@ Modified /etc/ssh/sshd_config
 
 Tested ssh connection to port 2200
 
-    ssh grader@54.70.76.145 -i 'grader_priv_key' -p 2200
+    ssh grader@X.X.X.X -i 'grader_priv_key' -p 2200
 
 Removed port 22 from the Lightsail firewall
 
@@ -101,6 +99,7 @@ Configured time zone to UTC
     sudo dpkg-reconfigure tzdata
 
 Selected 'None of the Above' from first screen
+
     Selected UTC from second screen (UTC was the default setting)
 
 Installed and set up NTP
@@ -129,6 +128,7 @@ Switch to postgres user and start psql
     psql
     
 Changed PostgreSQL admin password
+
     (while logged into psql as the postgres user)
     \password postgres
     (entered and confirmed password)
@@ -226,14 +226,14 @@ https://serverfault.com/questions/83508/purpose-of-debian-sites-available-and-si
 
 In my main application code, I had to change the relative path to the Google OAuth credential file to an absolute path.
 
-When creating the database (running models.py), after changing over to use PostgreSQL, I had to increase the size of the password hash.  This was not an issue when using the SQLite database.  I used these resources to work through the issue:
+When creating the database (running models.py), after changing over to use PostgreSQL, I had to increase the size of the password hash.  This was not an issue when using the SQLite database.  I used these resources while setting up PostgreSQL:
 
 https://discussions.udacity.com/t/tips-for-configuring-postgresql-and-setting-up-item-catalog-project/223436
 
 https://stackoverflow.com/questions/21354136/dataerror-value-too-long-for-type-character-varying16-in-django-social-auth
 
 
-While logging into Google, there was an origin mismatch error.  I discovered that I needed to set the origin in the Google API console to the URL and not to the IP address.  This resource was helpful in pointing out the issue:
+While logging in using Google (Using Google OAuth), there was an origin mismatch error.  I discovered that I needed to set the origin in the Google API console to the URL and not to the IP address.  This resource was helpful in pointing out the issue:
 
 https://stackoverflow.com/questions/16850350/got-origin-mismatch-error-in-google-share-api
 
